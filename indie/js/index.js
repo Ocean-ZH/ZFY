@@ -37,8 +37,10 @@
         },
         getStatus(){
             return this.user.status;
+        },
+        refreshView(){
+            
         }
-        
     }
 
     window.createGame = createGame;
