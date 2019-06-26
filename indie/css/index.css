@@ -44,6 +44,9 @@
 .enemy-info .enemy-log {
   background-color: #ffe9b9;
 }
+.user-info {
+  padding: 5px;
+}
 .display-container {
   height: 15vh;
   min-height: 100px;
