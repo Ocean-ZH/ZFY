@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>indie Game</title>
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/index.js"></script>
+    <style>
+        .clearfloat::after{
+            content:"";
+            display: block;
+            width: 0;
+            height: 0;
+            background: none;
+            background-color: transparent;
+            visibility: hidden;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="page-header clearfloat">
+                <h1>Indie Game <small>Alpha</small></h1>
+                <span class="glyphicon glyphicon-time"></span>
+                <span id="realTime"></span>
+                <button class="btn btn-primary btn-sm" id="resetBtn"><span class="glyphicon glyphicon-repeat"></span> reset</button>
+            </div>
+            <div class="main">
+                <div class="person-info enemy-info panel panel-default">
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-4 head-box">
+                            <div class="avatar">
+                                <img src="./images/enemy-avatar.jpg" alt="敌人的面容"
+                                    class="img-circle img-responsive">
+                            </div>
+                            <h4>敌人</h4>
+                        </div>
+                        <div class="col-sm-3 col-xs-8">
+                            <div class="status">
+                                <b href="#">气： <span class="badge">0</span></b>
+                            </div>
+                            <hr>
+                            <div class="enemy-log">
+                                <p>敌人使用了</p>
+                            </div>
+                        </div>
+                        <!-- <div class="col-sm-7 col-xs-4">
+                            
+                        </div> -->
+                    </div>
+                </div>
+                <section class="display-container well well-lg">
+                    <span class="background" style="background-image: url(./images/scene-2.jpg); opacity:.1;"></span>
+                    <div class="main-info">
+                        <p>something happened here...</p>
+                    </div>
+                </section>
+                <div class="person-info user-info">
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-4 head-box">
+                            <div class="avatar">
+                                <img src="./images/user-avatar.jpg" alt="敌人的面容" class="img-circle img-responsive">
+                            </div>
+                            <h4>玩家</h4>
+                        </div>
+                        <div class="col-sm-9 col-xs-8">
+                            <div class="status">
+                                <b href="#">气： <span class="badge">0</span></b>
+                            </div>
+                            <hr>
+                            <div class="control-panel panel">
+                                <ul class="list-group" >
+                                    <li class="list-group-item show">
+                                        <button class="btn  btn-default" id="user_block">格挡</button>
+                                        <button class="btn  btn-default" id="user_store">蓄气</button>
+                                    </li>
+                                    <li class="list-group-item hide">
+                                        <button class="btn  btn-default" id="user_block">小刀</button>
+                                        <button class="btn  btn-default" id="user_store">弹反</button>
+                                    </li>
+                                    <li class="list-group-item hide">
+                                        <button class="btn  btn-default" id="user_block">手枪</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        jQuery(document).ready(function ($) {
+            window.game = window.createGame();
+            // game.addPower(3);
+            // game.userFunc.addPower(3);
+            window.game2 = window.createGame();
+        });
+    </script>
+</body>
+</html>

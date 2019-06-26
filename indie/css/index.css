@@ -1,0 +1,68 @@
+.page-header {
+  margin: 15px 0;
+  position: relative;
+}
+.page-header h1 {
+  margin-top: 5px;
+}
+.page-header h1 small {
+  vertical-align: sub;
+  font-size: 0.5em;
+}
+.page-header #resetBtn {
+  float: right;
+}
+.person-info {
+  border: 1px solid #000;
+  padding: 5px;
+}
+.person-info .avatar img {
+  overflow: hidden;
+}
+.person-info .head-box .avatar img {
+  margin: 0 auto;
+}
+.person-info .head-box h4 {
+  text-align: center;
+}
+.person-info .status {
+  margin-bottom: 10px;
+}
+.person-info .status .badge {
+  background-color: #39e241;
+}
+.person-info .control-panel ul {
+  list-style: none;
+}
+.person-info .control-panel ul li {
+  list-style: none;
+  background-color: #eee;
+}
+.person-info .control-panel button {
+  margin: 0 5px;
+}
+.enemy-info .enemy-log {
+  background-color: #ffe9b9;
+}
+.display-container {
+  height: 15vh;
+  min-height: 100px;
+  position: relative;
+  background-color: #eee;
+  padding: 10px;
+}
+.display-container p {
+  font-size: 1.2em;
+}
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent no-repeat center center;
+  background-size: cover;
+}
+hr {
+  margin: 5px 0;
+}
