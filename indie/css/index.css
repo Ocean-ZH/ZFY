@@ -1,13 +1,13 @@
 .page-header {
-  margin: 15px 0;
+  margin: 0;
   position: relative;
 }
 .page-header h1 {
   margin-top: 5px;
 }
 .page-header h1 small {
-  vertical-align: sub;
-  font-size: 0.5em;
+  vertical-align: baseline;
+  font-size: 0.4em;
 }
 .page-header #resetBtn {
   float: right;
@@ -37,6 +37,7 @@
 .person-info .control-panel ul li {
   list-style: none;
   background-color: #eee;
+  padding: 5px 10px;
 }
 .person-info .control-panel button {
   margin: 0 5px;
@@ -44,7 +45,7 @@
 .enemy-info .enemy-log {
   background-color: #ffe9b9;
 }
-.user-info {
+.player-info {
   padding: 5px;
 }
 .display-container {

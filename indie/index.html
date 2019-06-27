@@ -63,7 +63,7 @@
                         <p>something happened here...</p>
                     </div>
                 </section>
-                <div class="person-info user-info">
+                <div class="person-info player-info" id="player" >
                     <div class="row">
                         <div class="col-sm-3 col-xs-4 head-box">
                             <div class="avatar">
@@ -73,21 +73,21 @@
                         </div>
                         <div class="col-sm-9 col-xs-8">
                             <div class="status">
-                                <b href="#">气： <span class="badge">0</span></b>
+                                <b href="#">气： <span class="badge" id="player_power">0</span></b>
                             </div>
                             <hr>
                             <div class="control-panel panel">
-                                <ul class="list-group" >
+                                <ul class="list-group" id="player_skill_ul" >
                                     <li class="list-group-item show">
-                                        <button class="btn  btn-default" id="user_block">格挡</button>
-                                        <button class="btn  btn-default" id="user_store">蓄气</button>
+                                        <button class="btn  btn-default" id="player_block">格挡</button>
+                                        <button class="btn  btn-default" id="player_charge">蓄气</button>
                                     </li>
                                     <li class="list-group-item hide">
-                                        <button class="btn  btn-default" id="user_knife">小刀</button>
-                                        <button class="btn  btn-default" id="user_parry">弹反</button>
+                                        <button class="btn  btn-default" id="player_knife">小刀</button>
+                                        <button class="btn  btn-default" id="player_parry">弹反</button>
                                     </li>
                                     <li class="list-group-item hide">
-                                        <button class="btn  btn-default" id="user_pistol">手枪</button>
+                                        <button class="btn  btn-default" id="player_pistol">手枪</button>
                                     </li>
                                 </ul>
                             </div>
@@ -96,13 +96,16 @@
                 </div>
             </div>
         </div>
+        <div id="app2">
+
+        </div>
     </div>
     <script>
         jQuery(document).ready(function ($) {
-            window.game = window.createGame();
+            window.game = window.createGame('app');
             // game.addPower(3);
             // game.userFunc.addPower(3);
-            window.game2 = window.createGame();
+            window.game2 = window.createGame('app2');
         });
     </script>
 </body>
