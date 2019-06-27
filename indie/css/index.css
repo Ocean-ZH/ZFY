@@ -21,6 +21,7 @@
 }
 .person-info .head-box .avatar img {
   margin: 0 auto;
+  border: 4px solid #ccc;
 }
 .person-info .head-box h4 {
   text-align: center;
@@ -51,12 +52,19 @@
 .display-container {
   height: 15vh;
   min-height: 100px;
-  position: relative;
-  background-color: #eee;
+  background-color: rgba(255, 255, 255, 0.4);
   padding: 10px;
+  position: relative;
 }
-.display-container p {
+.display-container .main-info {
+  height: 100%;
+  overflow: auto;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+  background-color: rgba(150, 150, 150, 0.1);
+}
+.display-container .main-info p {
   font-size: 1.2em;
+  text-indent: 1em;
 }
 .background {
   position: absolute;
@@ -64,8 +72,11 @@
   left: 0;
   right: 0;
   bottom: 0;
+  margin: 0;
+  padding: 0;
   background: transparent no-repeat center center;
   background-size: cover;
+  z-index: -1;
 }
 hr {
   margin: 5px 0;

@@ -26,6 +26,7 @@
         .avatar {
             img {
                 margin: 0 auto;
+                border: 4px solid #ccc;
             }
         }
 
@@ -71,11 +72,20 @@
     height: 15vh;
     min-height: 100px;
     position: relative;
-    background-color: #eee;
+    background-color: rgba(255,255,255,.4);
     padding: 10px;
-    p {
-        font-size: 1.2em;
+    position: relative;
+    .main-info{
+        height: 100%;
+        overflow: auto;
+        box-shadow: 0 0 3px 0 rgba(0,0,0,.2);
+        background-color: rgba(150,150,150,.1);
+        p {
+            font-size: 1.2em;
+            text-indent: 1em;
+        }
     }
+    
 }
 
 .background {
@@ -84,8 +94,11 @@
     left: 0;
     right: 0;
     bottom: 0;
+    margin: 0;
+    padding: 0;
     background: transparent no-repeat center center;
     background-size: cover;
+    z-index:-1;
 }
 
 hr {

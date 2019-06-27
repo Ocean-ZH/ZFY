@@ -6,7 +6,7 @@
         realTime();
         window.realTimeTimer = setInterval(realTime, 500);
     });
-
+    //实时时间
     function realTime(){
         let d = new Date();
         let timeDom = document.querySelector('#realTime');
@@ -32,23 +32,27 @@
         this.player = new Player(this);
         this.enemy = new Enemy(this);
         this.domEventList = [];
+        this.queue = [];
 
         bindEvents(this);
     }
     GameInit.prototype = {
         constructor: GameInit,
+        //重置状态
         reset(){
             this.player.reset();
             this.enemy.reset();
+            this.executeQueue('reset');
         },
+        //销毁游戏实例
         destroy(){
             this.reset();
-            this.refreshView();
+            this.executeQueue('destroy');
             //解绑所有事件
             this.domEventList.forEach((el)=>{
                 // console.log(this)
                 el.eventList.forEach((eventObj)=>{
-                    el.removeEventListener(eventObj.type,eventObj.handler);
+                    removeEvent(el)
                 });
             });
             //销毁游戏实例对象属性
@@ -57,15 +61,32 @@
             }
             return null;
         },
+        //刷新视图
         refreshView(){
             this.player.refreshView();
+        },
+        //执行队列
+        executeQueue(props){
+            if (props){
+                console.log(props);
+                if(typeof props === 'function'){
+                    props();
+                }
+                this.refreshView();
+                this.queue.push(props);
+            }else{
+                console.log('Must execute a queue with props!')
+                console.log(this);
+                return false;
+            }
         },
     }
     
     /* -- 角色类 -- */
-    function Character(target){
-        this.gameInstance = target;
-        this.life = 1;
+    function Character(gameInstance){
+        this.gameInstance = gameInstance;
+        this.action = new Action(this);
+        this.doing = "";
         //power
         let powerVal = 0;
         Object.defineProperty(this, 'power', {
@@ -82,12 +103,14 @@
     };
     Character.prototype = Object.assign(Character.prototype,{
         constructor:Character,
-        addPower(num = 1){
-            this.power += 1;
+        setPower(num = 1){
+            this.power += num;
             return this;
         },
+        
         reset(){
             this.power = 0;
+            this.doing = "";
         },
         refreshView(){
             //player_power
@@ -105,50 +128,167 @@
             })
         },
     });
-
-    function Player(target){
-        Character.call(this, target);
-        this.dom = target.dom.querySelector('#player');
+    //玩家子类
+    function Player(gameInstance){
+        Character.call(this, gameInstance);
+        this.dom = gameInstance.dom.querySelector('#player');
         this.view={
             power: this.dom?this.dom.querySelector('#player_power'):null,
         };
     };
     inherits(Player,Character);
-
+    //敌人子类
     function Enemy(props){
         Character.call(this, props);
     };
     inherits(Enemy,Character);
 
 
+    /* -- 动作类 -- */
+    function Action(character){
+        this.character = character;
+
+        this.execute = function(type){
+            if(actions[type]){
+                actions[type]();
+            } else if (this.actions[type]){
+                this.actions[type]();
+            }
+            this.character.gameInstance.executeQueue(type);
+        };
+
+        let actions = {
+            charge: (num = 1) => {
+                this.character.doing = "charge";
+                this.character.power += num;
+                return this;
+            },
+            block: () => {
+                this.character.doing = "block";
+                return this;
+            },
+            knife: () => {
+                this.character.doing = "knife";
+                this.character.power -= 1;
+                return this;
+            },
+            parry: () => {
+                this.character.doing = "parry";
+                this.character.power -= 1;
+                return this;
+            },
+            pistol: () => {
+                this.character.doing = "pistol";
+                this.character.power -= 2;
+                return this;
+            },
+        };
+
+        this.actions = {
+            /* laugh: ()=>{
+                console.log('laugh')
+                console.log(this.character.dom)
+            } */
+        }
+
+    }
+    Action.prototype={
+        constructor:Action,
+    }
+
+    /* -- 信息类 -- */
+    function Info(){
+        
+    }
+    Info.prototype={
+        constructor: Info,
+
+    }
+    //主屏信息
+    function mainInfo(target) {
+        Info.call(this, target);
+
+    };
+    inherits(mainInfo, Info);
+
+
     /* -- 构建功能函数 -- */
     //事件绑定
-    function bindEvents(target){
-        //reset button #resetBtn
-        let resetBtn = target.dom.querySelector('#resetBtn');
+    function bindEvents(obj){
+        //事件DOM存入游戏实例的domEventList中
+        function domEventList(dom){
+            let flag = obj.domEventList.some(el=>{
+                return el === dom;
+            })
+            if(!flag){
+                obj.domEventList.push(dom);
+            }
+        }
+
+        //重置数据 button #resetBtn
+        let resetBtn = obj.dom.querySelector('#resetBtn');
         if(resetBtn){
             let handler = function(event){
-                target.reset();
-                target.refreshView();
+                obj.reset();
             }
             let type = 'click';
             addEvent(resetBtn,type,handler);
-            target.domEventList.push(resetBtn);
+            domEventList(resetBtn);
         }
 
         // 玩家蓄气 button #player_charge
-        let chargeBtn = target.dom.querySelector('#player_charge');
-        if(chargeBtn){
+        let player_charge = obj.dom.querySelector('#player_charge');
+        if (player_charge){
             let handler = function(event){
-                target.player.addPower();
-                target.refreshView();
+                obj.player.action.execute('charge');
             }
-            addEvent(chargeBtn,'click',handler);
-            target.domEventList.push(chargeBtn);
+            addEvent(player_charge,'click',handler);
+            domEventList(player_charge);
+        }
+
+        // 玩家格挡 button #player_block
+        let player_block = obj.dom.querySelector('#player_block');
+        if (player_block) {
+            let handler = function (event) {
+                obj.player.action.execute('block');
+            }
+            addEvent(player_block, 'click', handler);
+            domEventList(player_block);
+        }
+
+        // 玩家小刀 button #player_knife
+        let player_knife = obj.dom.querySelector('#player_knife');
+        if (player_knife) {
+            let handler = function (event) {
+                obj.player.action.execute('knife');
+            }
+            addEvent(player_knife, 'click', handler);
+            domEventList(player_knife);
+        }
+        
+        // 玩家弹反 button #player_parry
+        let player_parry = obj.dom.querySelector('#player_parry');
+        if (player_parry) {
+            let handler = function (event) {
+                obj.player.action.execute('parry');
+            }
+            addEvent(player_parry, 'click', handler);
+            domEventList(player_parry);
+        }
+        
+        // 玩家手枪 button #player_pistol
+        let player_pistol = obj.dom.querySelector('#player_pistol');
+        if (player_pistol) {
+            let handler = function (event) {
+                obj.player.action.execute('pistol');
+            }
+            addEvent(player_pistol, 'click', handler);
+            domEventList(player_pistol);
         }
     }
 
     /* -- 构建工具函数 -- */
+    //原型继承
     function inherits(Child, Parent){
         var F = function(){};
         F.prototype = Parent.prototype;
@@ -156,6 +296,7 @@
         Child.prototype.constructor = Child;
     }
 
+    //增加事件
     function addEvent(dom,type,handler){
         dom.addEventListener(type,handler);
         if(!dom.eventList){
@@ -165,7 +306,19 @@
             type,
             handler,
         });
+        return true;
     }
+    //删除事件
+    function removeEvent(dom){
+        if (dom.eventList){
+            dom.removeEventListener(dom.eventList.type, dom.eventList.handler);
+            delete dom.eventList;
+        }else{
+            return false;
+        }
+    }
+
+
 
     
     window.createGame = createGame;
