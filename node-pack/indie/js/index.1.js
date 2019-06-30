@@ -1,5 +1,7 @@
 'use strict';
 
+import Action from './Action.js'
+
 ;(function(){
 
     jQuery(document).ready(function ($) {
@@ -96,7 +98,9 @@
                 return powerVal;
             },
             set:function(value){
-                powerVal = value;
+                if(value <= 3){
+                    powerVal = value;
+                }
             },
         });
         
@@ -135,6 +139,27 @@
         this.view={
             power: this.dom?this.dom.querySelector('#player_power'):null,
         };
+        //power
+        let powerVal = 0;
+        Object.defineProperty(this, 'power', {
+            configurable: true,
+            enumerable: true,
+            get: function () {
+                return powerVal;
+            },
+            set: function (value) {
+                if (value <= 3) {
+                    powerVal = value;
+                    if(value == 3){
+                        this.dom.querySelector('#player_charge').setAttribute('disabled', 'true');
+                    }else{
+                        this.dom.querySelector('#player_charge').removeAttribute('disabled');
+                    }
+                } else {
+                    this.dom.querySelector('#player_charge').setAttribute('disabled','true');
+                }
+            },
+        });
     };
     inherits(Player,Character);
     //敌人子类
@@ -145,7 +170,7 @@
 
 
     /* -- 动作类 -- */
-    function Action(character){
+    /* function Action(character){
         this.character = character;
 
         this.execute = function(type){
@@ -182,19 +207,20 @@
                 this.character.power -= 2;
                 return this;
             },
+            critical_attack:()=>{
+                this.character.doing = "critical_attack";
+                this.character.power -= 3;
+                return this;
+            }
         };
 
         this.actions = {
-            /* laugh: ()=>{
-                console.log('laugh')
-                console.log(this.character.dom)
-            } */
         }
 
-    }
-    Action.prototype={
+    } */
+    /* Action.prototype={
         constructor:Action,
-    }
+    } */
 
     /* -- 信息类 -- */
     function Info(){
@@ -284,6 +310,16 @@
             }
             addEvent(player_pistol, 'click', handler);
             domEventList(player_pistol);
+        }
+
+        // 玩家绝技 button #player_critical
+        let player_critical = obj.dom.querySelector('#player_critical');
+        if (player_critical) {
+            let handler = function (event) {
+                obj.player.action.execute('critical_attack');
+            }
+            addEvent(player_critical, 'click', handler);
+            domEventList(player_critical);
         }
     }
 

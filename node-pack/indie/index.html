@@ -89,6 +89,9 @@
                                     <li class="list-group-item hide">
                                         <button class="btn  btn-default" id="player_pistol">手枪</button>
                                     </li>
+                                    <li class="list-group-item hide">
+                                        <button class="btn  btn-default" id="player_critical">绝技</button>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -100,11 +103,13 @@
 
         </div>
     </div>
+    <script src="./js/Game.js" type="module"></script>
     <script>
-        jQuery(document).ready(function ($) {
+        function afterWindowLoad(){
             window.game = window.createGame('app');
             window.game2 = window.createGame('app2');
-        });
+        }
+        window.addEventListener('load',afterWindowLoad);
     </script>
 </body>
 </html>
