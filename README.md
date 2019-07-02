@@ -5,6 +5,9 @@ javascript 构建的一个小游戏
 
 施工中...
 
+# 在线访问
+https://ocean-zh.github.io/ZFY/node-pack/indie/index.html
+
 # 本地运行方法：
 
 安装[node.js环境](https://nodejs.org/en/)
