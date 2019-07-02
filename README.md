@@ -12,10 +12,12 @@ javascript 构建的一个小游戏
 ```
 cd node-pack
 node app.js
-
-//或者安装使用nodemon(https://www.npmjs.com/package/nodemon)实现自动重启的node服务
+```
+或者安装使用[nodemon](https://www.npmjs.com/package/nodemon)实现自动重启的node服务
+```
 nodemon app.js
 ```
+
 
 由于使用了ES6的module进行模块化
 浏览器禁止使用file协议进行ES6的import加载
