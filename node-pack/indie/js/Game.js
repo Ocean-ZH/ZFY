@@ -1,4 +1,5 @@
-import Action from './Action.js'
+// import Action from './Action.js';
+import {Player, Enemy} from './Character.js';
 
 /* -- 创建游戏 -- */
 function createGame(id = 'app') {
@@ -64,160 +65,6 @@ GameInit.prototype = {
     },
 }
 
-/* -- 角色类 -- */
-function Character(gameInstance) {
-    this.gameInstance = gameInstance;
-    this.action = new Action(this);
-    this.doing = "";
-    //power
-    let powerVal = 0;
-    Object.defineProperty(this, 'power', {
-        configurable: true,
-        enumerable: true,
-        get: function () {
-            return powerVal;
-        },
-        set: function (value) {
-            if (value <= 3) {
-                powerVal = value;
-            }
-        },
-    });
-
-};
-Character.prototype = Object.assign(Character.prototype, {
-    constructor: Character,
-    setPower(num = 1) {
-        this.power += num;
-        return this;
-    },
-
-    reset() {
-        this.power = 0;
-        this.doing = "";
-    },
-    refreshView() {
-        //player_power
-        this.view.power.innerHTML = this.power;
-        //player_skill_ul
-        let skillList = this.gameInstance.dom.querySelectorAll('#player_skill_ul >li');
-        skillList.forEach((el, i) => {
-            if (i <= this.power) {
-                el.classList.remove('hide');
-                el.classList.add('show');
-            } else {
-                el.classList.remove('show');
-                el.classList.add('hide');
-            }
-        })
-    },
-});
-//玩家子类
-function Player(gameInstance) {
-    Character.call(this, gameInstance);
-    this.dom = gameInstance.dom.querySelector('#player');
-    this.view = {
-        power: this.dom ? this.dom.querySelector('#player_power') : null,
-    };
-    //power
-    let powerVal = 0;
-    Object.defineProperty(this, 'power', {
-        configurable: true,
-        enumerable: true,
-        get: function () {
-            return powerVal;
-        },
-        set: function (value) {
-            if (value <= 3) {
-                powerVal = value;
-                if (value == 3) {
-                    this.dom.querySelector('#player_charge').setAttribute('disabled', 'true');
-                } else {
-                    this.dom.querySelector('#player_charge').removeAttribute('disabled');
-                }
-            } else {
-                this.dom.querySelector('#player_charge').setAttribute('disabled', 'true');
-            }
-        },
-    });
-};
-inherits(Player, Character);
-//敌人子类
-function Enemy(props) {
-    Character.call(this, props);
-};
-inherits(Enemy, Character);
-
-
-/* -- 动作类 -- */
-/* function Action(character){
-    this.character = character;
-
-    this.execute = function(type){
-        if(actions[type]){
-            actions[type]();
-        } else if (this.actions[type]){
-            this.actions[type]();
-        }
-        this.character.gameInstance.executeQueue(type);
-    };
-
-    let actions = {
-        charge: (num = 1) => {
-            this.character.doing = "charge";
-            this.character.power += num;
-            return this;
-        },
-        block: () => {
-            this.character.doing = "block";
-            return this;
-        },
-        knife: () => {
-            this.character.doing = "knife";
-            this.character.power -= 1;
-            return this;
-        },
-        parry: () => {
-            this.character.doing = "parry";
-            this.character.power -= 1;
-            return this;
-        },
-        pistol: () => {
-            this.character.doing = "pistol";
-            this.character.power -= 2;
-            return this;
-        },
-        critical_attack:()=>{
-            this.character.doing = "critical_attack";
-            this.character.power -= 3;
-            return this;
-        }
-    };
-
-    this.actions = {
-    }
-
-} */
-/* Action.prototype={
-    constructor:Action,
-} */
-
-/* -- 信息类 -- */
-function Info() {
-
-}
-Info.prototype = {
-    constructor: Info,
-
-}
-//主屏信息
-function mainInfo(target) {
-    Info.call(this, target);
-
-};
-inherits(mainInfo, Info);
-
-
 /* -- 构建功能函数 -- */
 //事件绑定
 function bindEvents(obj) {
@@ -246,7 +93,7 @@ function bindEvents(obj) {
     let player_charge = obj.dom.querySelector('#player_charge');
     if (player_charge) {
         let handler = function (event) {
-            obj.player.action.execute('charge');
+            obj.player.action.execute('charge', 1);
         }
         addEvent(player_charge, 'click', handler);
         domEventList(player_charge);
@@ -334,9 +181,7 @@ function removeEvent(dom) {
     }
 }
 
+
 window.createGame = createGame;
-
-
-
 
 export default createGame;

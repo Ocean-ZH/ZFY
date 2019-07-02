@@ -1,6 +1,6 @@
 'use strict';
 
-import Action from './Action.js'
+import Action from '../js/Action.js'
 
 ;(function(){
 
@@ -170,7 +170,7 @@ import Action from './Action.js'
 
 
     /* -- 动作类 -- */
-    /* function Action(character){
+    function Action(character){
         this.character = character;
 
         this.execute = function(type){
@@ -217,10 +217,10 @@ import Action from './Action.js'
         this.actions = {
         }
 
-    } */
-    /* Action.prototype={
+    }
+    Action.prototype={
         constructor:Action,
-    } */
+    }
 
     /* -- 信息类 -- */
     function Info(){

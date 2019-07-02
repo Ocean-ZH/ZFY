@@ -1,15 +1,20 @@
 .page-header {
     margin: 0;
     position: relative;
+
     h1 {
         margin-top: 5px;
+        margin-bottom: 5px;
+        font-size: 32px;
+        line-height: 1;
 
         small {
             vertical-align: baseline;
             font-size: 0.4em;
         }
     }
-    #resetBtn{
+
+    #resetBtn {
         float: right;
     }
 }
@@ -17,11 +22,13 @@
 .person-info {
     border: 1px solid #000;
     padding: 5px;
+
     .avatar {
         img {
             overflow: hidden;
         }
     }
+
     .head-box {
         .avatar {
             img {
@@ -32,11 +39,15 @@
 
         h4 {
             text-align: center;
+            background: #ccc;
+            font-size: 16px;
+            padding: 3px 0;
         }
     }
 
     .status {
         margin-bottom: 10px;
+
         .badge {
             background-color: rgb(57, 226, 65);
         }
@@ -45,6 +56,7 @@
     .control-panel {
         ul {
             list-style: none;
+
             li {
                 list-style: none;
                 background-color: #eee;
@@ -72,20 +84,22 @@
     height: 15vh;
     min-height: 100px;
     position: relative;
-    background-color: rgba(255,255,255,.4);
+    background-color: rgba(255, 255, 255, .4);
     padding: 10px;
     position: relative;
-    .main-info{
+
+    .main-info {
         height: 100%;
         overflow: auto;
-        box-shadow: 0 0 3px 0 rgba(0,0,0,.2);
-        background-color: rgba(150,150,150,.1);
+        box-shadow: 0 0 3px 0 rgba(0, 0, 0, .2);
+        background-color: rgba(150, 150, 150, .1);
+
         p {
             font-size: 1.2em;
             text-indent: 1em;
         }
     }
-    
+
 }
 
 .background {
@@ -98,11 +112,48 @@
     padding: 0;
     background: transparent no-repeat center center;
     background-size: cover;
-    z-index:-1;
+    z-index: -1;
 }
 
 hr {
     margin: 5px 0;
 }
 
-@media (max-width:768px) {}
+@media (max-width:768px) {
+    .panel {
+        margin-bottom: 10px;
+    }
+
+    .well {
+        margin-bottom: 10px;
+    }
+
+    .page-header {
+        h1 {
+            font-size: 24px;
+        }
+
+        #resetBtn {
+            padding: 3px 8px;
+        }
+    }
+
+    .person-info {
+        .head-box {
+            .avatar {
+                img {
+                    margin: 0 auto;
+                    border: 4px solid #ccc;
+                }
+            }
+
+            h4 {
+                text-align: center;
+                background: #ccc;
+                font-size: 16px;
+                padding: 3px 0;
+                margin: 3px 0;
+            }
+        }
+    }
+}
