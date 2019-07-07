@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-let port = 8080;
+const port = 8880;
 
 app.use('/indie', express.static('./indie'));
 

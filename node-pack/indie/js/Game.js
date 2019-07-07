@@ -1,42 +1,57 @@
-// import Action from './Action.js';
-import {Player, Enemy} from './Character.js';
+/* 
+    游戏主类
+*/
+
+import { Player, Enemy } from './Character.js';
+import { Processor } from './Processor.js';
 
 /* -- 创建游戏 -- */
-function createGame(id = 'app') {
+function createGame(id = 'app', payload) {
+    var defaultConfig = {
+        player: {
+            name: '玩家',
+        },
+        enemy: {
+            name: '敌人',
+        }
+    };
+    var config = Object.assign(defaultConfig, payload);
+    //新建游戏实例
+    var game = new GameInit(id, config);
 
-    var game = new GameInit(id);
     return game;
 }
 
 /* -- 游戏主体构造函数 -- */
-function GameInit(id) {
+function GameInit(id, config) {
     this.id = id;
-    this.dom = document.querySelector('#' + id);
-    this.player = new Player(this);
-    this.enemy = new Enemy(this);
-    this.domEventList = [];
+    // this.dom = document.querySelector('#' + id);
+    this.dom = document.getElementById(id);
+    this.characters = {
+        player: new Player(this, config.player),
+        enemy: new Enemy(this, config.enemy),
+    }
+    this.processor = new Processor(this),
     this.queue = [];
 
-    bindEvents(this);
+    bindEvents(this)
 }
 GameInit.prototype = {
     constructor: GameInit,
     //重置状态
     reset() {
-        this.player.reset();
-        this.enemy.reset();
-        this.executeQueue('reset');
+        this.characters.player.reset();
+        this.characters.enemy.reset();
+        this.processor.execute('reset');
     },
     //销毁游戏实例
     destroy() {
         this.reset();
         this.executeQueue('destroy');
         //解绑所有事件
-        this.domEventList.forEach((el) => {
-            // console.log(this)
-            el.eventList.forEach((eventObj) => {
-                removeEvent(el)
-            });
+        Object.keys(this.characters).forEach((k) => {
+            console.log(this.characters)
+            this.characters[k].clearEvents();
         });
         //销毁游戏实例对象属性
         for (let key in this) {
@@ -46,19 +61,16 @@ GameInit.prototype = {
     },
     //刷新视图
     refreshView() {
-        this.player.refreshView();
+        this.processor.refreshView();
     },
-    //执行队列
-    executeQueue(props) {
-        if (props) {
-            console.log(props);
-            if (typeof props === 'function') {
-                props();
-            }
-            this.refreshView();
-            this.queue.push(props);
+    //执行队列记录
+    addQueue(data = null) {
+        if (data) {
+            data.type == 'character_action' ? console.log(data.context.character.name): '';
+            console.log(data.name);
+            this.queue.push(data);
         } else {
-            console.log('Must execute a queue with props!')
+            console.log('Must logging a queue with arguments!')
             console.log(this);
             return false;
         }
@@ -68,16 +80,6 @@ GameInit.prototype = {
 /* -- 构建功能函数 -- */
 //事件绑定
 function bindEvents(obj) {
-    //事件DOM存入游戏实例的domEventList中
-    function domEventList(dom) {
-        let flag = obj.domEventList.some(el => {
-            return el === dom;
-        })
-        if (!flag) {
-            obj.domEventList.push(dom);
-        }
-    }
-
     //重置数据 button #resetBtn
     let resetBtn = obj.dom.querySelector('#resetBtn');
     if (resetBtn) {
@@ -86,67 +88,6 @@ function bindEvents(obj) {
         }
         let type = 'click';
         addEvent(resetBtn, type, handler);
-        domEventList(resetBtn);
-    }
-
-    // 玩家蓄气 button #player_charge
-    let player_charge = obj.dom.querySelector('#player_charge');
-    if (player_charge) {
-        let handler = function (event) {
-            obj.player.action.execute('charge', 1);
-        }
-        addEvent(player_charge, 'click', handler);
-        domEventList(player_charge);
-    }
-
-    // 玩家格挡 button #player_block
-    let player_block = obj.dom.querySelector('#player_block');
-    if (player_block) {
-        let handler = function (event) {
-            obj.player.action.execute('block');
-        }
-        addEvent(player_block, 'click', handler);
-        domEventList(player_block);
-    }
-
-    // 玩家小刀 button #player_knife
-    let player_knife = obj.dom.querySelector('#player_knife');
-    if (player_knife) {
-        let handler = function (event) {
-            obj.player.action.execute('knife');
-        }
-        addEvent(player_knife, 'click', handler);
-        domEventList(player_knife);
-    }
-
-    // 玩家弹反 button #player_parry
-    let player_parry = obj.dom.querySelector('#player_parry');
-    if (player_parry) {
-        let handler = function (event) {
-            obj.player.action.execute('parry');
-        }
-        addEvent(player_parry, 'click', handler);
-        domEventList(player_parry);
-    }
-
-    // 玩家手枪 button #player_pistol
-    let player_pistol = obj.dom.querySelector('#player_pistol');
-    if (player_pistol) {
-        let handler = function (event) {
-            obj.player.action.execute('pistol');
-        }
-        addEvent(player_pistol, 'click', handler);
-        domEventList(player_pistol);
-    }
-
-    // 玩家绝技 button #player_critical
-    let player_critical = obj.dom.querySelector('#player_critical');
-    if (player_critical) {
-        let handler = function (event) {
-            obj.player.action.execute('critical_attack');
-        }
-        addEvent(player_critical, 'click', handler);
-        domEventList(player_critical);
     }
 }
 
@@ -171,10 +112,12 @@ function addEvent(dom, type, handler) {
     });
     return true;
 }
-//删除事件
-function removeEvent(dom) {
+//清除事件
+function clearEvents(dom) {
     if (dom.eventList) {
-        dom.removeEventListener(dom.eventList.type, dom.eventList.handler);
+        dom.eventList.forEach(el => {
+            dom.removeEventListener(el.type, el.handler);
+        })
         delete dom.eventList;
     } else {
         return false;

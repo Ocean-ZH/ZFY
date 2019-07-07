@@ -1,10 +1,17 @@
-import Action from './Action.js';
+/* 
+    角色类
+*/
+
+import { CharacterAction } from './Action.js';
+import { PlayerView, EnemyView } from './ViewObj.js';
 
 class Character{
-    constructor(gameInstance){
+    constructor(gameInstance, payload){
         this.gameInstance = gameInstance;
-        this.action = new Action(this);
+        this.action = new CharacterAction(this);
         this.doing = "";
+        this.name = payload ? payload.name ? payload.name : "角色" : "角色";
+        this.live = 3;
         //power
         let powerVal = 0;
         Object.defineProperty(this, 'power', {
@@ -24,49 +31,41 @@ class Character{
     }
 
     reset() {
+        // console.log(this)
         this.power = 0;
         this.doing = "";
     }
 }
 
 class Player extends Character {
-    constructor(gameInstance) {
-        super(gameInstance);
+    constructor(gameInstance, payload) {
+        super(gameInstance, payload);
         this.dom = gameInstance.dom.querySelector('#player');
-        this.view = {
-            power: this.dom ? this.dom.querySelector('#player_power') : null,
-        };
+        this.name = payload ? payload.name ? payload.name : "玩家" : "玩家";
+        this.view = new PlayerView(this);
     }
 
     refreshView() {
-        //player_power
-        this.view.power.innerHTML = this.power;
-        //player_skill_ul
-        let skillList = this.dom.querySelectorAll('#player_skill_ul >li');
-        skillList.forEach((el, i) => {
-            if (i <= this.power) {
-                el.classList.remove('hide');
-                el.classList.add('show');
-            } else {
-                el.classList.remove('show');
-                el.classList.add('hide');
-            }
-        })
+        this.view.refreshView();
     }
 }
 
 class Enemy extends Character {
-    constructor(gameInstance) {
-        super(gameInstance);
+    constructor(gameInstance, payload) {
+        super(gameInstance, payload);
         this.dom = gameInstance.dom.querySelector('#enemy');
-        this.view = {
-            power: this.dom ? this.dom.querySelector('#enemy_power') : null,
-        };
+        this.name = payload ? payload.name ? payload.name : "敌人" : "敌人";
+        this.view = new EnemyView(this);
     }
 
     refreshView() {
         //enemy_power
-        this.view.power.innerHTML = this.power;
+        this.view.refreshView();
+    }
+
+    reset() {
+        console.log(this)
+        this.power = 0;
     }
 }
 

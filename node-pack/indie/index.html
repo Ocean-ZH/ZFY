@@ -41,15 +41,15 @@
                                 <img src="./images/enemy-avatar.jpg" alt="玩累了就直接睡觉" title="让我康康"
                                     class="img-circle img-responsive">
                             </div>
-                            <h4>敌人</h4>
+                            <h4 id="name">敌人</h4>
                         </div>
                         <div class="col-sm-3 col-xs-8">
                             <div class="status">
                                 <b href="#">气： <span class="badge" id="enemy_power">0</span></b>
                             </div>
                             <hr>
-                            <div class="enemy-log">
-                                <p>敌人使用了</p>
+                            <div class="enemy-log" >
+                                <p id="enemy_action_log">敌人使用了</p>
                             </div>
                         </div>
                         <!-- <div class="col-sm-7 col-xs-4">
@@ -69,7 +69,7 @@
                             <div class="avatar">
                                 <img src="./images/player-avatar.jpg" alt="痛苦的面容" title="杰哥你干嘛啊" class="img-circle img-responsive">
                             </div>
-                            <h4>玩家</h4>
+                            <h4 id="name">玩家</h4>
                         </div>
                         <div class="col-sm-9 col-xs-8">
                             <div class="status">
@@ -105,9 +105,18 @@
     </div>
     <script src="./js/Game.js" type="module"></script>
     <script>
+        var game = null;
         function afterWindowLoad(){
-            window.game = window.createGame('app');
-            window.game2 = window.createGame('app2');
+            let gameConfig = {
+                player: {
+                    name: '阿伟',
+                },
+                enemy: {
+                    name: '杰哥'
+                }
+            };
+            game = createGame('app', gameConfig);
+            // window.game2 = window.createGame('app2');
         }
         window.addEventListener('load',afterWindowLoad);
     </script>
