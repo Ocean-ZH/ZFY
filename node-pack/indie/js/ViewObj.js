@@ -4,7 +4,14 @@
 
 class ViewObj {
     constructor( ){
-        
+        this.doingMap = {
+            charge: '蓄气',
+            block: '格挡',
+            knife: '小刀',
+            parry: '弹反',
+            pistol: '手枪',
+            critical_attack: '绝技',
+        };
     }
     //增加事件
     addEvent({dom, event}) {
@@ -38,6 +45,35 @@ class ViewObj {
     }
 }
 
+class MainView extends ViewObj {
+    constructor(gameInstance){
+        super();
+        this.gameInstance = gameInstance;
+        let dom = gameInstance.dom;
+        this.dom = dom;
+        this.info = this.dom.querySelector('#main-info');
+    }
+
+    refreshView() {
+        //main-info
+        let str = '';
+        let queue = [...this.gameInstance.queue];
+        queue.reverse();
+        if(queue.length > 0) {
+            queue.forEach(el => {
+                if (typeof el === 'object') {
+                    str += `<p>${el.context.character.name}: 使用了${this.doingMap[el.name]} </p>`
+                } else if (typeof el === 'string') {
+                    str += `<p>${el}</p>`;
+                } else if (typeof el === 'number') {
+                    str += `<p>----------${el}----------</p>`;
+                }
+            });
+            this.info.innerHTML = str;
+        }
+    }
+}
+
 class CharacterView extends ViewObj{
     constructor(character){
         super();
@@ -53,6 +89,7 @@ class PlayerView extends CharacterView{
         this.dom = dom;
         this.name = this.dom.querySelector('#name');
         this.power = this.dom.querySelector('#player_power');
+        this.health = this.dom.querySelector('#player_health');
         this.control = {
             skill:{
                 // 玩家蓄气 button #player_charge
@@ -138,6 +175,8 @@ class PlayerView extends CharacterView{
     refreshView(){
         //player_power
         this.power.innerHTML = this.character.power;
+        //player_health
+        this.health.innerHTML = this.character.health;
         //name
         this.name.innerHTML = this.character.name;
         //player_skill_ul
@@ -161,21 +200,16 @@ class EnemyView extends CharacterView{
         this.dom = dom;
         this.name = this.dom.querySelector('#name');
         this.power = this.dom.querySelector('#enemy_power');
+        this.health = this.dom.querySelector('#enemy_health');
         this.log = this.dom.querySelector('#enemy_action_log');
-        this.doingMap = {
-            charge:'蓄气',
-            block:'格挡',
-            knife:'小刀',
-            parry:'弹反',
-            pistol:'手枪',
-            critical_attack:'绝技',
-        };
         this.refreshView();
     }
 
     refreshView() {
         //enemy_power
         this.power.innerHTML = this.character.power;
+        // enemy_health
+        this.health.innerHTML = this.character.health;
         //name
         this.name.innerHTML = this.character.name;
         //name
@@ -184,4 +218,4 @@ class EnemyView extends CharacterView{
     }
 }
 
-export { PlayerView, EnemyView };
+export { PlayerView, EnemyView, MainView };

@@ -48,19 +48,27 @@ class CharacterAction extends Action {
         };
         this.effects = {
             charge:{
-                
-            },
-            block:{
+                doing: 'charge',
                 self:{
-                    doing: 'block',
-                    strength:1,
-                },
-            },
-            knife:{
-                self:{
+                    strength: 0,
                     power: 1,
                 },
+            },
+            block:{
+                doing: 'block',
+                self:{
+                    strength: 1,
+                    power: 0,
+                },
+            },
+            knife: {
+                doing: 'knife',
+                self:{
+                    strength: 1,
+                    power: -1,
+                },
                 foe:{
+                    damage: 1,
                     power: 0,
                 }
             },

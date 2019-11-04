@@ -48,8 +48,18 @@
     .status {
         margin-bottom: 10px;
 
+        b {
+            margin-right: 10px;
+        }
+
         .badge {
             background-color: rgb(57, 226, 65);
+            &.health {
+                background-color: rgb(57, 226, 65);
+            }
+            &.energy {
+                background-color: #f1c834;
+            }
         }
     }
 
@@ -95,8 +105,10 @@
         background-color: rgba(150, 150, 150, .1);
 
         p {
-            font-size: 1.2em;
+            font-size: 1em;
             text-indent: 1em;
+            line-height: 1;
+            margin-bottom: 5px;
         }
     }
 

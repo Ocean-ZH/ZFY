@@ -35,8 +35,17 @@
 .person-info .status {
   margin-bottom: 10px;
 }
+.person-info .status b {
+  margin-right: 10px;
+}
 .person-info .status .badge {
   background-color: #39e241;
+}
+.person-info .status .badge.health {
+  background-color: #39e241;
+}
+.person-info .status .badge.energy {
+  background-color: #f1c834;
 }
 .person-info .control-panel ul {
   list-style: none;
@@ -69,8 +78,10 @@
   background-color: rgba(150, 150, 150, 0.1);
 }
 .display-container .main-info p {
-  font-size: 1.2em;
+  font-size: 1em;
   text-indent: 1em;
+  line-height: 1;
+  margin-bottom: 5px;
 }
 .background {
   position: absolute;

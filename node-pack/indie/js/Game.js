@@ -4,6 +4,8 @@
 
 import { Player, Enemy } from './Character.js';
 import { Processor } from './Processor.js';
+import { MainView } from './ViewObj.js';
+import { EnemyAI } from './EnemyAI.js';
 
 /* -- 创建游戏 -- */
 function createGame(id = 'app', payload) {
@@ -31,10 +33,14 @@ function GameInit(id, config) {
         player: new Player(this, config.player),
         enemy: new Enemy(this, config.enemy),
     }
-    this.processor = new Processor(this),
+    this.view = new MainView(this);
+    this.processor = new Processor(this);
     this.queue = [];
+    this.enemyAI = new EnemyAI(this);
+    this.round = 0;
 
-    bindEvents(this)
+    bindEvents(this);
+    this.processor.refreshView();
 }
 GameInit.prototype = {
     constructor: GameInit,
@@ -61,16 +67,18 @@ GameInit.prototype = {
     },
     //刷新视图
     refreshView() {
-        this.processor.refreshView();
+        this.view.refreshView();
     },
     //执行队列记录
     addQueue(data = null) {
-        if (data) {
-            data.type == 'character_action' ? console.log(data.context.character.name): '';
-            console.log(data.name);
+        if (data !== null && data !== undefined) {
+            if(typeof data === 'object') {
+                // data.type == 'character_action' ? console.log(data.context.character.name): '';
+                // console.log(data.name);
+            }
             this.queue.push(data);
         } else {
-            console.log('Must logging a queue with arguments!')
+            console.warn('Must logging a queue with arguments!')
             console.log(this);
             return false;
         }

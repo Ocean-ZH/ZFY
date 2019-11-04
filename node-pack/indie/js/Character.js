@@ -11,7 +11,7 @@ class Character{
         this.action = new CharacterAction(this);
         this.doing = "";
         this.name = payload ? payload.name ? payload.name : "角色" : "角色";
-        this.live = 3;
+        this.health = 3;
         //power
         let powerVal = 0;
         Object.defineProperty(this, 'power', {
@@ -42,6 +42,7 @@ class Player extends Character {
         super(gameInstance, payload);
         this.dom = gameInstance.dom.querySelector('#player');
         this.name = payload ? payload.name ? payload.name : "玩家" : "玩家";
+        this.playerType = 'Player';
         this.view = new PlayerView(this);
     }
 
@@ -55,7 +56,9 @@ class Enemy extends Character {
         super(gameInstance, payload);
         this.dom = gameInstance.dom.querySelector('#enemy');
         this.name = payload ? payload.name ? payload.name : "敌人" : "敌人";
+        this.playerType = 'AI';
         this.view = new EnemyView(this);
+        this.health = 5;
     }
 
     refreshView() {
@@ -64,7 +67,7 @@ class Enemy extends Character {
     }
 
     reset() {
-        console.log(this)
+        // console.log(this);
         this.power = 0;
     }
 }
