@@ -2,6 +2,8 @@
     视图类
 */
 
+import { arrRandomPick } from './util/ToolsFunc.js';
+
 class ViewObj {
     constructor( ){
         this.doingMap = {
@@ -57,7 +59,11 @@ class MainView extends ViewObj {
     refreshView() {
         //main-info
         let str = '';
+        // 队列记录:
         let queue = [...this.gameInstance.queue];
+        if (queue.length === 0) {
+            this.initView();
+        }
         queue.reverse();
         if(queue.length > 0) {
             queue.forEach(el => {
@@ -66,11 +72,18 @@ class MainView extends ViewObj {
                 } else if (typeof el === 'string') {
                     str += `<p>${el}</p>`;
                 } else if (typeof el === 'number') {
-                    str += `<p>----------${el}----------</p>`;
+                    str += `<p>----------↑ Turn: ${el} ↑----------</p>`;
                 }
             });
             this.info.innerHTML = str;
         }
+    }
+
+    // 初次载入时选对话
+    initView() {
+        let murmurArr = this.gameInstance.characters.enemy.murmur;
+        let murmur = arrRandomPick(murmurArr);
+        this.info.innerHTML = `${this.gameInstance.characters.enemy.name}: ${murmur}`;
     }
 }
 
@@ -202,6 +215,7 @@ class EnemyView extends CharacterView{
         this.power = this.dom.querySelector('#enemy_power');
         this.health = this.dom.querySelector('#enemy_health');
         this.log = this.dom.querySelector('#enemy_action_log');
+        this.speak = this.dom.querySelector('#enemy_speak');
         this.refreshView();
     }
 
@@ -214,7 +228,24 @@ class EnemyView extends CharacterView{
         this.name.innerHTML = this.character.name;
         //name
         let doing = this.doingMap[this.character.doing] || this.character.doing;
+        // action_log
         this.log.innerHTML = `${this.character.name}使用了: ${doing}`;
+        // speak
+        if (this.character.result) {
+            let speakStr = ''
+            speakStr = arrRandomPick(this.character.speak[this.character.result]);
+            this.speak.innerHTML = `&nbsp;${speakStr}`;
+        } else if (this.character.status) {
+            let speakStr = ''
+            speakStr = arrRandomPick(this.character.speak[this.character.status]);
+            this.speak.innerHTML = `&nbsp;${speakStr}`;
+        } else if (this.character.doing) {
+            let speakStr = ''
+            if(this.character.speak[this.character.doing]){
+                speakStr = arrRandomPick(this.character.speak[this.character.doing]);
+            }
+            this.speak.innerHTML = `&nbsp;${speakStr}`;
+        }
     }
 }
 

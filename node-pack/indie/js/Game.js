@@ -35,8 +35,8 @@ function GameInit(id, config) {
     }
     this.view = new MainView(this);
     this.processor = new Processor(this);
-    this.queue = [];
     this.enemyAI = new EnemyAI(this);
+    this.queue = [];
     this.round = 0;
 
     bindEvents(this);
@@ -48,6 +48,7 @@ GameInit.prototype = {
     reset() {
         this.characters.player.reset();
         this.characters.enemy.reset();
+        
         this.processor.execute('reset');
     },
     //销毁游戏实例

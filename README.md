@@ -1,9 +1,7 @@
 # ZFY
 indie project
 
-Javascript 构建的一个小游戏
-
-施工中...
+Deving...
 
 # 在线访问
 https://ocean-zh.github.io/ZFY/node-pack/indie/index.html
@@ -20,6 +18,10 @@ node app.js
 ```
 nodemon app.js
 ```
+若看见`Server is running at port 8880!`，则表示运行成功。
+
+本地访问：
+`http://127.0.0.1:8880/indie/`
 
 
 由于使用了ES6的module进行模块化
@@ -28,6 +30,6 @@ nodemon app.js
 
 故需要搭建一个简单的服务器环境，在http协议下访问
 
-这里使用的是node.js
+这里使用的是node.js + express
 
 实际上根据个人情况，将indie文件夹放入自己的服务器中也是可行的

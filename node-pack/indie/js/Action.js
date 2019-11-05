@@ -18,7 +18,7 @@ class CharacterAction extends Action {
         this._actions = {
             charge(num = 1) {
                 this.character.doing = "charge";
-                this.character.power += num;
+                // this.character.power += num;
                 return this;
             },
             block() {
@@ -27,73 +27,96 @@ class CharacterAction extends Action {
             },
             knife() {
                 this.character.doing = "knife";
-                this.character.power -= 1;
+                // this.character.power -= 1;
                 return this;
             },
             parry() {
                 this.character.doing = "parry";
-                this.character.power -= 1;
+                // this.character.power -= 1;
                 return this;
             },
             pistol() {
                 this.character.doing = "pistol";
-                this.character.power -= 2;
+                // this.character.power -= 2;
                 return this;
             },
             critical_attack() {
                 this.character.doing = "critical_attack";
-                this.character.power -= 3;
+                // this.character.power -= 3;
                 return this;
             },
         };
         this.effects = {
             charge:{
                 doing: 'charge',
+                weight: 2,
                 self:{
-                    strength: 0,
+                    defence: 0,
                     power: 1,
+                    counter: '',
                 },
+                foe:{
+                    damage: 0,
+                }
             },
             block:{
                 doing: 'block',
+                weight: 1,
                 self:{
-                    strength: 1,
+                    defence: 1,
                     power: 0,
+                    counter: '',
                 },
+                foe:{
+                    damage: 0,
+                }
             },
             knife: {
                 doing: 'knife',
+                weight: 2,
                 self:{
-                    strength: 1,
+                    defence: 0,
                     power: -1,
+                    counter: '',
                 },
                 foe:{
                     damage: 1,
-                    power: 0,
                 }
             },
             parry:{
+                doing: 'parry',
+                weight: 1,
                 self:{
-                    power: 1,
+                    power: -1,
+                    defence: 1,
+                    counter: 'knife',
                 },
                 foe:{
-                    power: 0,
+                    damage: 0,
                 }
             },
             pistol:{
+                doing: 'pistol',
+                weight: 3,
                 self:{
-                    power: 1,
+                    power: -2,
+                    defence: 0,
+                    counter: '',
                 },
                 foe:{
-                    power: 0,
+                    damage: 2,
                 }
             },
             critical_attack:{
+                doing: 'critical_attack',
+                weight: 4,
                 self:{
-                    power: 1,
+                    power: -3,
+                    defence: 0,
+                    counter: '',
                 },
                 foe:{
-                    power: 0,
+                    damage: 3,
                 }
             },
             
@@ -107,7 +130,8 @@ class CharacterAction extends Action {
         this.character.gameInstance.processor.execute({
             type: 'character_action',
             name: action,
-            content:{
+            props,
+            effects:{
                 ...that.effects[action]
             },
             context: this,
