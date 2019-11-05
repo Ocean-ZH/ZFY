@@ -147,7 +147,7 @@ class Enemy extends Character {
                 '那个彬彬就是逊啦！',
                 '这件事是我们两个人之间的秘密，你最好不要给我告诉任何人',
             ],
-        }
+        };
         this.murmur = [
             '我房间里有一些好康的...',
             '我经常帮助一些翘家的人...',
@@ -166,6 +166,7 @@ class Enemy extends Character {
         this.health = 5;
         this.doing = "";
         this.result = '';
+        this.status = '';
     }
 }
 

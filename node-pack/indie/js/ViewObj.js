@@ -243,6 +243,8 @@ class EnemyView extends CharacterView{
             let speakStr = ''
             if(this.character.speak[this.character.doing]){
                 speakStr = arrRandomPick(this.character.speak[this.character.doing]);
+            } else {
+                speakStr = arrRandomPick(this.character.murmur);
             }
             this.speak.innerHTML = `&nbsp;${speakStr}`;
         }
