@@ -4,7 +4,7 @@ indie project
 Deving...
 
 # 在线访问
-https://ocean-zh.github.io/ZFY/node-pack/indie/index.html
+http://game.fdycloud.com:8880
 
 # 本地运行方法：
 

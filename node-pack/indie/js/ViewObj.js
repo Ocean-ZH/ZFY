@@ -54,6 +54,11 @@ class MainView extends ViewObj {
         let dom = gameInstance.dom;
         this.dom = dom;
         this.info = this.dom.querySelector('#main-info');
+        this.loading_mask = this.dom.querySelector('#loading_mask');
+        this.helpBtn = this.dom.querySelector('#helpBtn');
+        this.helpMask = this.dom.querySelector('#helpMask');
+
+        this.initEvent();
     }
 
     refreshView() {
@@ -79,11 +84,50 @@ class MainView extends ViewObj {
         }
     }
 
-    // 初次载入时选对话
+    // 初始化主框架上的事件
+    initEvent() {
+        // helpBtn
+        this.addEvent({
+            dom: this.helpBtn,
+            event:{
+                type: 'click',
+                handler: (event) => {
+                    this.helpMask.classList.toggle('hide');
+                },
+            },
+        });
+        // helpMask
+        this.addEvent({
+            dom: this.helpMask,
+            event:{
+                type: 'click',
+                handler: (event) => {
+                    this.helpMask.classList.add('hide');
+                },
+            },
+        });
+    }
+
+    // 初次载入时
     initView() {
+        // 选对话
         let murmurArr = this.gameInstance.characters.enemy.murmur;
         let murmur = arrRandomPick(murmurArr);
         this.info.innerHTML = `${this.gameInstance.characters.enemy.name}: ${murmur}`;
+        // 取消loading
+        this.loadingChange(false);
+    }
+    /**
+     * 
+     * @param {Boolean} cmd 默认 true
+     * @description 控制主界面loading显隐
+     */
+    loadingChange(cmd = true) {
+        if (cmd) {
+            this.loading_mask.style.display = 'block';
+        } else {
+            this.loading_mask.style.display = 'none';
+        }
     }
 }
 

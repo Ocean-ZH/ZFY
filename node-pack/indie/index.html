@@ -26,20 +26,42 @@
 </head>
 <body>
     <div id="app">
+        <div class="mask-wrapper" 
+            id="loading_mask"
+            style="position: fixed; top:0; right: 0; bottom: 0; left: 0; background-color: rgba(0,0,0,.5); z-index: 9;"
+        >
+            <div class="mask-content" style="display: flex; box-sizing: border-box; height: 100vh; flex-flow: column nowrap; justify-content: center; align-items: center; color: #fff;">
+                <style>
+                    #loading_icon {
+                        transform: rotate(0deg);
+                        animation: loadingRotate 1s linear infinite;
+                    }
+                    @keyframes loadingRotate 
+                    {
+                        from {transform:  rotate(0deg)}
+                        to { transform:  rotate(360deg)}
+                    }
+                </style>
+                <span id="loading_icon" class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+                loading...
+            </div>
+        </div>
         <div class="container">
             <div class="page-header clearfloat">
                 <h1>Indie Game <small>Alpha</small></h1>
                 <span class="glyphicon glyphicon-time"></span>
                 <span id="realTime"></span>
-                <button class="btn btn-primary btn-sm" id="resetBtn"><span class="glyphicon glyphicon-repeat"></span> reset</button>
+                <div class="header-right">
+                    <span id="helpBtn" class="glyphicon glyphicon-question-sign" style="color: #30b6de;"></span>
+                    <button class="btn btn-primary btn-sm" id="resetBtn"><span class="glyphicon glyphicon-repeat"></span> reset</button>
+                </div>
             </div>
             <div class="main">
                 <div class="person-info enemy-info panel panel-default" id="enemy">
                     <div class="row">
                         <div class="col-sm-3 col-xs-4 head-box">
                             <div class="avatar">
-                                <img src="./images/enemy-avatar.jpg" alt="玩累了就直接睡觉" title="让我康康"
-                                    class="img-circle img-responsive">
+                                <img src="./images/enemy-avatar.jpg" alt="玩累了就直接睡觉" title="让我康康" class="img-circle img-responsive">
                             </div>
                             <h4 id="name">敌人</h4>
                         </div>
@@ -51,7 +73,7 @@
                             <hr>
                             <div class="enemy-log" >
                                 <p id="enemy_action_log">敌人使用了</p>
-                                <p class="enemy-speak" id="enemy_speak"></p>
+                                <p class="enemy-speak" id="enemy_speak">:</p>
                             </div>
                         </div>
                         <!-- <div class="col-sm-7 col-xs-4">
@@ -98,6 +120,24 @@
                                 </ul>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mask help-mask hide" id="helpMask">
+                <div class="help-wrapper" >
+                    <div class="help-content">
+                        <div class="help-header">
+                            <h4>Guide</h4>
+                        </div>
+                        <div class="help-body">
+                            <ol>
+                                <li>技能需要消耗气释放;</li>
+                                <li>敌人的技能和你一样;</li>
+                                <li>实际造成的伤害 = 伤害-防御;</li>
+                                <li>任意一方血量归零时游戏结束;</li>
+                            </ol>
+                        </div>
+                        <div class="help-footer"></div>
                     </div>
                 </div>
             </div>
